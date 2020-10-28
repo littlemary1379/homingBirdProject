@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "435368107960",
+    "firebase_url": "https://homingbirdproject.firebaseio.com",
+    "project_id": "homingbirdproject",
+    "storage_bucket": "homingbirdproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435368107960:android:0cb14d9a741b6145e9b94d",
+        "android_client_info": {
+          "package_name": "com.mary.homingbird"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435368107960-u3m5l3fonp60utg7s8g9fqft5kcqdkjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mary.homingbird",
+            "certificate_hash": "3bb215588d95b21902e9b68d23e4f67b5dc9412d"
+          }
+        },
+        {
+          "client_id": "435368107960-mvjpeg41e14in1u4eb1mgn5t7od1oo6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFSnE2KYqEZ2jTFvH1wZhvr9kBWgf4r4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435368107960-mvjpeg41e14in1u4eb1mgn5t7od1oo6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/postbox"
+        android:title="@string/bottom_navigation_title_postbox" />
+    <item
+        android:id="@+id/post_office"
+        android:title="@string/bottom_navigation_title_post_office"/>
+</menu>

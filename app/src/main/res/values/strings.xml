@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">homingBird</string>
+
+    <string name="bottom_navigation_title_postbox">우체통</string>
+    <string name="bottom_navigation_title_post_office">우체통</string>
+</resources>
