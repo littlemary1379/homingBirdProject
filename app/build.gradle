@@ -44,4 +44,9 @@ dependencies {
 
     //Google firebase
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+
+    //Google firebase Authentication
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
+
 }

@@ -27,12 +27,13 @@
             android:text="느리고 사랑스러운 말들을 전달합니다" />
 
         <TextView
+            android:id="@+id/textViewWriteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="편지 쓰기"
             android:textColor="@color/white"
-            android:background="@color/color_a79c8e"
+            android:background="@drawable/bg_button_a79c8e"
             android:layout_gravity="center"/>
 
 
