@@ -1,5 +1,6 @@
 package com.mary.homingbird.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -13,17 +14,24 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mary.homingbird.R;
+import com.mary.homingbird.findFriend.FindFriendActivity;
 import com.mary.homingbird.main.adapter.MainFragmentAdapter;
 import com.mary.homingbird.main.fragment.FragmentPostOffice;
 import com.mary.homingbird.main.fragment.FragmentPostbox;
 import com.mary.homingbird.main.fragment.MainZoomOutPageTransfomer;
+import com.mary.homingbird.util.ActivityUtil;
 import com.mary.homingbird.util.DlogUtil;
 
 import org.w3c.dom.Text;
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private DrawerLayout drawerLayout;
-    private Toolbar toolbar;
+    private NavigationView navigationView;
 
     private MainFragmentAdapter mainFragmentAdapter;
 
@@ -47,19 +55,30 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewPostBox;
     private ImageView imageViewMenu;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkLogin();
         findView();
         initFragment();
+        initNavigation();
         setListener();
+    }
+
+    private void checkLogin(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
     }
 
     private void findView(){
         viewPager = findViewById(R.id.viewPager);
         drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigation);
 
         textViewPostBox = findViewById(R.id.textViewPostBox);
         textViewPostOffice = findViewById(R.id.textViewPostOffice);
@@ -82,17 +101,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNavigation(){
-
+        Menu menu = navigationView.getMenu();
+        if(firebaseUser!=null){
+            menu.findItem(R.id.menu_login).setVisible(false);
+            menu.findItem(R.id.menu_logout).setVisible(true);
+        }else{
+            menu.findItem(R.id.menu_login).setVisible(true);
+            menu.findItem(R.id.menu_logout).setVisible(false);
+        }
     }
 
     private void setListener(){
 
-        imageViewMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DlogUtil.d(TAG, "imageViewMenu 클릭");
-                drawerLayout.openDrawer(Gravity.LEFT);
+        imageViewMenu.setOnClickListener(v -> {
+            DlogUtil.d(TAG, "imageViewMenu 클릭");
+            drawerLayout.openDrawer(Gravity.LEFT);
+        });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            DlogUtil.d(TAG, "navigationView 클릭");
+
+            if(item.getItemId() == R.id.menu_addFriend){
+                DlogUtil.d(TAG, "addFriend 클릭");
+                ActivityUtil.startActivityWithoutFinish(MainActivity.this, FindFriendActivity.class);
+                return true;
+            }else if(item.getItemId() == R.id.menu_logout){
+                DlogUtil.d(TAG, "logout 클릭");
+                callSignOut();
+
             }
+
+            return false;
         });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -158,6 +197,10 @@ public class MainActivity extends AppCompatActivity {
 //                   .commit();
 //
 //        });
+    }
+
+    private void callSignOut(){
+        firebaseAuth.signOut();
     }
 
 }
