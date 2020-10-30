@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">homingBird</string>
 
+    <!--Google-->
+    <string name="google_web_client_id">347873575612-nhsjs6gocobr1c44hs9u0v2qms5j8m2a.apps.googleusercontent.com</string>
+
     <!--main navigation-->
     <string name="bottom_navigation_title_postbox">우체통</string>
     <string name="bottom_navigation_title_post_office">우체국</string>
 
     <!--Login Activity-->
     <string name="login_email_explanation">다양한 기능을 이용하기 위해서는\n로그인이 필요합니다.</string>
+    <string name="login_goggle_explanation">구글 로그인으로 편하게 이용해보세요.</string>
+    <string name="login_email_join_explanation">이메일로 이용하기</string>
 
     <!--Login Fragment-->
     <string name="login_email_id">이메일</string>

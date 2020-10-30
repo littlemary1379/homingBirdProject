@@ -49,4 +49,7 @@ dependencies {
     //Google firebase Authentication
     implementation 'com.google.firebase:firebase-auth:19.4.0'
 
+    //Google Login
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
 }
