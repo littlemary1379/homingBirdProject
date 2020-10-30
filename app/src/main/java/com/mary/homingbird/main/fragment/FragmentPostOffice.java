@@ -18,6 +18,7 @@ import com.mary.homingbird.R;
 import com.mary.homingbird.login.LoginActivity;
 import com.mary.homingbird.util.ActivityUtil;
 import com.mary.homingbird.util.DlogUtil;
+import com.mary.homingbird.writeMessage.WriteActivity;
 
 public class FragmentPostOffice extends Fragment {
 
@@ -60,6 +61,7 @@ public class FragmentPostOffice extends Fragment {
                 ActivityUtil.startActivityWithoutFinish(getContext(), LoginActivity.class);
             }else{
                 DlogUtil.d(TAG, "로그인 되어있음");
+                ActivityUtil.startActivityWithoutFinish(getContext(), WriteActivity.class);
             }
         });
     }

@@ -52,4 +52,7 @@ dependencies {
     //Google Login
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
+    //Google FireStore
+    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+
 }

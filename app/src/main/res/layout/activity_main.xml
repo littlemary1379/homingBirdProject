@@ -1,74 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.MainActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|left"
+        app:menu="@menu/main_menu"
+        app:headerLayout="@layout/main_navigation_header"/>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/color_f8ecc9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutPostBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:orientation="vertical"
-            android:layout_gravity="center">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageViewPostBox"
+                android:id="@+id/imageViewMenu"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/postbox_3"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"/>
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_menu"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textViewPostBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_a79c8e"
-                android:text="우체통"
-                android:layout_gravity="center"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutPostOffice"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/color_f8ecc9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
-                android:id="@+id/imageViewPostOffice"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/postoffice_1"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/textViewPostOffice"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayoutPostBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_f1bbba"
-                android:text="우체국"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/imageViewPostBox"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/postbox_3" />
+
+                <TextView
+                    android:id="@+id/textViewPostBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="우체통"
+                    android:textColor="@color/color_a79c8e" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPostOffice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageViewPostOffice"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/postoffice_1" />
+
+                <TextView
+                    android:id="@+id/textViewPostOffice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="우체국"
+                    android:textColor="@color/color_f1bbba" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

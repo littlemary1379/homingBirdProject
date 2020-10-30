@@ -1,7 +1,9 @@
 package com.mary.homingbird.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -10,6 +12,7 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +24,7 @@ import com.mary.homingbird.main.adapter.MainFragmentAdapter;
 import com.mary.homingbird.main.fragment.FragmentPostOffice;
 import com.mary.homingbird.main.fragment.FragmentPostbox;
 import com.mary.homingbird.main.fragment.MainZoomOutPageTransfomer;
+import com.mary.homingbird.util.DlogUtil;
 
 import org.w3c.dom.Text;
 
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private ViewPager viewPager;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+
     private MainFragmentAdapter mainFragmentAdapter;
 
     private LinearLayout linearLayoutPostBox;
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewPostBox;
     private ImageView imageViewPostOffice;
     private ImageView imageViewPostBox;
+    private ImageView imageViewMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void findView(){
         viewPager = findViewById(R.id.viewPager);
+        drawerLayout = findViewById(R.id.drawerLayout);
 
         textViewPostBox = findViewById(R.id.textViewPostBox);
         textViewPostOffice = findViewById(R.id.textViewPostOffice);
         imageViewPostBox = findViewById(R.id.imageViewPostBox);
         imageViewPostOffice = findViewById(R.id.imageViewPostOffice);
+        imageViewMenu = findViewById(R.id.imageViewMenu);
 
         linearLayoutPostBox = findViewById(R.id.linearLayoutPostBox);
         linearLayoutPostOffice = findViewById(R.id.linearLayoutPostOffice);
@@ -71,7 +81,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPageTransformer(true, new MainZoomOutPageTransfomer());
     }
 
+    private void initNavigation(){
+
+    }
+
     private void setListener(){
+
+        imageViewMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DlogUtil.d(TAG, "imageViewMenu 클릭");
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
