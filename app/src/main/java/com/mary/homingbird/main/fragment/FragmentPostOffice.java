@@ -12,8 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mary.homingbird.R;
 import com.mary.homingbird.login.LoginActivity;
+import com.mary.homingbird.util.ActivityUtil;
+import com.mary.homingbird.util.DlogUtil;
 
 public class FragmentPostOffice extends Fragment {
 
@@ -22,6 +26,8 @@ public class FragmentPostOffice extends Fragment {
     private View view;
 
     private TextView textViewWriteButton;
+
+    private FirebaseAuth firebaseAuth;
 
     public static FragmentPostOffice newInstance(){
         FragmentPostOffice fragmentPostOffice = new FragmentPostOffice();
@@ -33,6 +39,7 @@ public class FragmentPostOffice extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_main_postoffice,container,false);
+        firebaseAuth = FirebaseAuth.getInstance();
         findView();
         setListener();
         return view;
@@ -46,8 +53,14 @@ public class FragmentPostOffice extends Fragment {
     private void setListener(){
         textViewWriteButton.setOnClickListener(view -> {
             Log.d(TAG, "setListener: textViewWriteButton 클릭");
-            Intent intent = new Intent(getContext(), LoginActivity.class);
-            startActivity(intent);
+
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            if(currentUser.equals("")) {
+                DlogUtil.d(TAG, "로그인 안 되어있음");
+                ActivityUtil.startActivityWithoutFinish(getContext(), LoginActivity.class);
+            }else{
+                DlogUtil.d(TAG, "로그인 되어있음");
+            }
         });
     }
 }

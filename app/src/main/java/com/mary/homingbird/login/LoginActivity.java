@@ -63,10 +63,9 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "onActivityResult: " + account.getId());
                 firebaseAuthGoogle(account.getIdToken());
             } catch (ApiException e) {
-
+                e.printStackTrace();
             }
 
         }
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initGoogleLogin() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.google_web_client_id))
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -103,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
+
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -112,10 +112,14 @@ public class LoginActivity extends AppCompatActivity {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "onComplete: 성공");
+                DlogUtil.d(TAG, "로그인 성공");
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                LoginActivity.this.finish();
+
             } else {
+                DlogUtil.d(TAG, "로그인 실패");
                 Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+
             }
 
             hideProgressBar();
