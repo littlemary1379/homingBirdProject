@@ -33,7 +33,7 @@ public class LoginUtil {
                     if (task.isSuccessful()) {
                         DlogUtil.d(TAG, "성공 : 여기로 오나?");
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            hashMap.put("code", documentSnapshot.getData().containsKey("code"));
+                            hashMap.put("code", documentSnapshot.getData().get("code"));
                         }
 
                         if (hashMap.isEmpty()) {
@@ -57,7 +57,7 @@ public class LoginUtil {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("email", firebaseAuth.getCurrentUser().getEmail());
         hashMap.put("username", firebaseAuth.getCurrentUser().getDisplayName());
-        hashMap.put("code", code);
+        hashMap.put("code", String.valueOf(code));
         db.collection("user").document(firebaseAuth.getCurrentUser().getEmail())
                 .set(hashMap)
                 .addOnSuccessListener(aVoid -> DlogUtil.d(TAG, "성공 : " + hashMap.get("code")))
@@ -79,7 +79,7 @@ public class LoginUtil {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             DlogUtil.d(TAG, documentSnapshot.getData());
-                            hashMap.put("code", documentSnapshot.getData().containsValue("code"));
+                            hashMap.put("code", documentSnapshot.getData().get("code"));
                         }
 
                         if (hashMap.isEmpty()) {
