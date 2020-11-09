@@ -1,10 +1,7 @@
-package com.mary.homingbird.login;
+package com.mary.homingbird.login.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.mary.homingbird.R;
-import com.mary.homingbird.main.MainActivity;
+import com.mary.homingbird.util.LoginUtil;
 import com.mary.homingbird.util.ProgressBarUtil;
 
-public class FragmentLoginEmail extends Fragment {
+public class FragmentJoinEmail extends Fragment {
 
     private static final String TAG = "FragmentLoginEmail";
 
@@ -39,15 +32,15 @@ public class FragmentLoginEmail extends Fragment {
 
     private FirebaseAuth firebaseAuth;
 
-    public static FragmentLoginEmail newInstance() {
-        FragmentLoginEmail fragmentPostbox = new FragmentLoginEmail();
+    public static FragmentJoinEmail newInstance() {
+        FragmentJoinEmail fragmentPostbox = new FragmentJoinEmail();
         return fragmentPostbox;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_login_email, container, false);
+        view = inflater.inflate(R.layout.fragment_join_email, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
 
         findView();
@@ -95,6 +88,7 @@ public class FragmentLoginEmail extends Fragment {
                 .addOnCompleteListener(getActivity(), task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "onComplete: 성공");
+                        LoginUtil.checkLogin();
                         hideProgressBar();
                         //FirebaseUser user = firebaseAuth.getCurrentUser();
                         getActivity().finish();

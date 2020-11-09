@@ -22,4 +22,9 @@
     <string name="login_email_id_hint">cherry@fruit.com</string>
     <string name="login_email_password">비밀번호</string>
     <string name="login_email_password_check">비밀번호 확인</string>
+
+    <!--FindFriend-->
+    <string name="find_friend_example">이름이나 아이디, 코드로 친구를 찾아보세요.</string>
+
+
 </resources>

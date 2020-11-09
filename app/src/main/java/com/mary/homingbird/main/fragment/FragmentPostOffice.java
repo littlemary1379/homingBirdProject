@@ -55,8 +55,6 @@ public class FragmentPostOffice extends Fragment {
         textViewWriteButton.setOnClickListener(view -> {
             Log.d(TAG, "setListener: textViewWriteButton 클릭");
 
-            ActivityUtil.startActivityWithoutFinish(getContext(), LoginActivity.class);
-
             FirebaseUser currentUser = firebaseAuth.getCurrentUser();
             if(currentUser==null) {
                 DlogUtil.d(TAG, "로그인 안 되어있음");

@@ -116,16 +116,16 @@ public class MainActivity extends AppCompatActivity {
         constraintLayoutContainer = findViewById(R.id.constraintLayoutContainer);
         viewMenuHeader = navigationView.getHeaderView(0);
 
-       Thread thread = new Thread(() -> {
-           try {
-               Thread.sleep(100);
-               runOnUiThread(() -> initDrawerMenu());
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           }
-       });
-
-       thread.start();
+//       Thread thread = new Thread(() -> {
+//           try {
+//               Thread.sleep(100);
+//               runOnUiThread(() -> initDrawerMenu());
+//           } catch (InterruptedException e) {
+//               e.printStackTrace();
+//           }
+//       });
+//
+//       thread.start();
     }
 
     private void initDrawerMenu(){
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         //전체 뷰 길이를 구함
         int height = drawerLayout.getHeight();
         DlogUtil.d(TAG, height);
+
 
         navigationView.setMinimumHeight(height);
 
