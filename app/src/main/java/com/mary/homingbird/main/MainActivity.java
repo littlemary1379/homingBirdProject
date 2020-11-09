@@ -1,8 +1,10 @@
 package com.mary.homingbird.main;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -11,12 +13,18 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.WindowMetrics;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,11 +57,15 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayoutPostBox;
     private LinearLayout linearLayoutPostOffice;
 
+    private ConstraintLayout constraintLayoutContainer;
+
     private TextView textViewPostOffice;
     private TextView textViewPostBox;
     private ImageView imageViewPostOffice;
     private ImageView imageViewPostBox;
     private ImageView imageViewMenu;
+
+    private View viewMenuHeader;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -67,8 +79,20 @@ public class MainActivity extends AppCompatActivity {
         findView();
         initFragment();
         initNavigation();
+
         setListener();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
+    //    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        initDrawerMenu();
+//        super.onWindowFocusChanged(hasFocus);
+//    }
 
     private void checkLogin(){
         firebaseAuth = FirebaseAuth.getInstance();
@@ -88,6 +112,38 @@ public class MainActivity extends AppCompatActivity {
 
         linearLayoutPostBox = findViewById(R.id.linearLayoutPostBox);
         linearLayoutPostOffice = findViewById(R.id.linearLayoutPostOffice);
+
+        constraintLayoutContainer = findViewById(R.id.constraintLayoutContainer);
+        viewMenuHeader = navigationView.getHeaderView(0);
+
+       Thread thread = new Thread(() -> {
+           try {
+               Thread.sleep(100);
+               runOnUiThread(() -> initDrawerMenu());
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           }
+       });
+
+       thread.start();
+    }
+
+    private void initDrawerMenu(){
+        //현재 네비게이션의 길이를 구함
+        int navigationHeight = navigationView.getHeight();
+        DlogUtil.d(TAG, navigationHeight);
+
+        //전체 뷰 길이를 구함
+        int height = drawerLayout.getHeight();
+        DlogUtil.d(TAG, height);
+
+        navigationView.setMinimumHeight(height);
+
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewMenuHeader.getLayoutParams();
+        layoutParams.bottomMargin = (height-navigationHeight)/2;
+
+        viewMenuHeader.setLayoutParams(layoutParams);
+
     }
 
     private void initFragment(){
@@ -109,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             menu.findItem(R.id.menu_login).setVisible(true);
             menu.findItem(R.id.menu_logout).setVisible(false);
         }
+        initDrawerMenu();
     }
 
     private void setListener(){

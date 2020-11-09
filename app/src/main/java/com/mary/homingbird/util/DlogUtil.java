@@ -20,7 +20,7 @@ public class DlogUtil {
         sb.append(" :: ");
         sb.append(ste.getFileName().replace(".java", ""));
         sb.append(" :: ");
-        sb.append((String)object);
+        sb.append(String.valueOf(object));
 
         return sb.toString();
     }

@@ -9,6 +9,7 @@
     tools:context=".main.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -102,7 +103,7 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="start|left"
         app:menu="@menu/main_menu"
         app:headerLayout="@layout/main_navigation_header"/>
