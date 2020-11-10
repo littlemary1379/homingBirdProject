@@ -3,6 +3,7 @@ package com.mary.homingbird.util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mary.homingbird.bean.MemberBean;
 
 import java.util.HashMap;
 
@@ -12,6 +13,8 @@ public class LoginUtil {
 
     private static FirebaseFirestore db;
     private static FirebaseAuth firebaseAuth;
+
+
 
     private static void initGoogleLogin() {
 
@@ -39,6 +42,9 @@ public class LoginUtil {
                         if (hashMap.isEmpty()) {
                             //코드를 생성하고, 코드가 있는지 재확인한다.
                             makeUserCode();
+                        } else {
+                            String finalCode = (String) hashMap.get("code");
+                            pushMemberBean(finalCode);
                         }
 
                     } else {
@@ -67,6 +73,12 @@ public class LoginUtil {
                 });
     }
 
+    private static void pushMemberBean(String code){
+        MemberBean.getInstance().code = code;
+        MemberBean.getInstance().email=firebaseAuth.getCurrentUser().getEmail();
+        MemberBean.getInstance().username=firebaseAuth.getCurrentUser().getDisplayName();
+    }
+
     private static void makeUserCode() {
         DlogUtil.d(TAG, "makeUserCode");
 
@@ -84,6 +96,7 @@ public class LoginUtil {
 
                         if (hashMap.isEmpty()) {
                             giveUserCode(code);
+                            pushMemberBean(String.valueOf(code));
                         } else {
                             makeUserCode();
                         }
@@ -100,6 +113,8 @@ public class LoginUtil {
                 });
 
     }
+
+
 
 
 }

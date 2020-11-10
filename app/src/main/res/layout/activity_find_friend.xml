@@ -32,7 +32,8 @@
                 android:id="@+id/editTextSearch"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:singleLine="true"/>
 
             <ImageView
                 android:id="@+id/imageViewSearch"
