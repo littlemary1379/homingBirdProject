@@ -26,5 +26,9 @@
     <!--FindFriend-->
     <string name="find_friend_example">이름이나 아이디, 코드로 친구를 찾아보세요.</string>
 
+    <!--writeMessage-->
+    <string name="writeMessage_next">다음</string>
+    <string name="writeMessageFirst_example">친구의 이메일을 선택해주세요.</string>
+
 
 </resources>

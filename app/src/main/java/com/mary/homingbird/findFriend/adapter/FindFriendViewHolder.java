@@ -51,12 +51,9 @@ public class FindFriendViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setListener(){
-        textViewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DlogUtil.d(TAG, "textViewButton 클릭");
-                SendFriendUtil.sendFriend(userBean.email, userBean.code);
-            }
+        textViewButton.setOnClickListener(v -> {
+            DlogUtil.d(TAG, "textViewButton 클릭");
+            SendFriendUtil.sendFriend(userBean.email, userBean.code);
         });
     }
 }

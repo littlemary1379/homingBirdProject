@@ -41,6 +41,7 @@ import com.mary.homingbird.main.fragment.FragmentPostbox;
 import com.mary.homingbird.main.fragment.MainZoomOutPageTransfomer;
 import com.mary.homingbird.util.ActivityUtil;
 import com.mary.homingbird.util.DlogUtil;
+import com.mary.homingbird.util.LoginUtil;
 
 import org.w3c.dom.Text;
 
@@ -97,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
     private void checkLogin(){
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
+        LoginUtil.checkLogin();
     }
 
     private void findView(){
