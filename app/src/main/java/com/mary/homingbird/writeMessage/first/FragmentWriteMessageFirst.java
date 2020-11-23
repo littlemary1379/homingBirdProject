@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +21,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mary.homingbird.R;
 import com.mary.homingbird.bean.MemberBean;
+import com.mary.homingbird.util.ActivityUtil;
 import com.mary.homingbird.util.DlogUtil;
+import com.mary.homingbird.writeMessage.second.FragmentWriteMessageSecond;
 
 import java.util.ArrayList;
 
@@ -33,6 +36,7 @@ public class FragmentWriteMessageFirst extends Fragment {
     private View view;
 
     private Spinner spinner;
+    private TextView textViewNext;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -50,6 +54,7 @@ public class FragmentWriteMessageFirst extends Fragment {
         initGoogle();
         findView();
         initData();
+        setListener();
 
         return view;
     }
@@ -65,29 +70,33 @@ public class FragmentWriteMessageFirst extends Fragment {
 
         db.collection("/user/" + MemberBean.getInstance().email + "/friend")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                DlogUtil.d(TAG, documentSnapshot.getData().get("email"));
-                                exampleArray.add((String) documentSnapshot.getData().get("email"));
-                            }
-                            DlogUtil.d(TAG, exampleArray);
-                            initSpinner();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            DlogUtil.d(TAG, documentSnapshot.getData().get("email"));
+                            exampleArray.add((String) documentSnapshot.getData().get("email"));
                         }
+                        DlogUtil.d(TAG, exampleArray);
+                        initSpinner();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+                .addOnFailureListener(e -> e.printStackTrace());
     }
 
     private void findView() {
+
         spinner = view.findViewById(R.id.spinner);
+        textViewNext = view.findViewById(R.id.textViewNext);
+    }
+
+    private void setListener(){
+        textViewNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DlogUtil.d(TAG, "하");
+                ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageSecond());
+            }
+        });
     }
 
     private void initSpinner() {
