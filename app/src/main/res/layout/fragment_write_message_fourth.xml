@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraintLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -14,25 +16,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="vertical"
-        android:gravity="center">
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/writeMessageThird_example"
+            android:text="@string/writeMessageFourth_example"
             android:layout_marginBottom="20dp"/>
 
+        <TextView
+            android:id="@+id/textViewToName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="받는 사람 : 이멍멍"/>
 
-        <EditText
-            android:id="@+id/editTextContent"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:inputType="textMultiLine"
-            android:background="@drawable/edittext_a79c8e"
-            android:textSize="14sp"
-            android:textColor="@color/color_838383"
-            android:gravity="top"
-            />
+        <TextView
+            android:id="@+id/textViewFromName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="보내는 사람 : 김야옹"/>
+
+        <TextView
+            android:id="@+id/textViewContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="보내는 말 : ㅇ러ㅜ멛러멩ㄻㅇㄻㅇㄹ"/>
 
         <TextView
             android:id="@+id/textViewNext"

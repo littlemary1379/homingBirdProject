@@ -31,6 +31,7 @@
     <string name="writeMessageFirst_example">친구의 이메일을 선택해주세요.</string>
     <string name="writeMessageSecond_example">친구에게 전달할 내 이름을 적어주세요.</string>
     <string name="writeMessageThird_example">친구에게 전달할 내용을 적어주세요.</string>
+    <string name="writeMessageFourth_example">친구에게 전달할 내용을 다시 한 번 확인해주세요.</string>
 
 
 </resources>

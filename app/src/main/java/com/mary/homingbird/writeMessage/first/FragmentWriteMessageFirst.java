@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,6 +25,8 @@ import com.mary.homingbird.R;
 import com.mary.homingbird.bean.MemberBean;
 import com.mary.homingbird.util.ActivityUtil;
 import com.mary.homingbird.util.DlogUtil;
+import com.mary.homingbird.util.ProgressBarUtil;
+import com.mary.homingbird.util.SharedPreferenceUtil;
 import com.mary.homingbird.writeMessage.second.FragmentWriteMessageSecond;
 
 import java.util.ArrayList;
@@ -40,6 +44,8 @@ public class FragmentWriteMessageFirst extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
+    
+    private String toName="";
 
     public static FragmentWriteMessageFirst newInstance() {
         FragmentWriteMessageFirst fragmentWriteMessageFirst = new FragmentWriteMessageFirst();
@@ -66,6 +72,7 @@ public class FragmentWriteMessageFirst extends Fragment {
 
     private void initData() {
 
+
         DlogUtil.d(TAG, "/user/" + MemberBean.getInstance().email + "/friend");
 
         db.collection("/user/" + MemberBean.getInstance().email + "/friend")
@@ -89,8 +96,27 @@ public class FragmentWriteMessageFirst extends Fragment {
         textViewNext = view.findViewById(R.id.textViewNext);
     }
 
-    private void setListener(){
-        textViewNext.setOnClickListener(v -> ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageSecond()));
+    private void setListener() {
+        textViewNext.setOnClickListener(v -> {
+            if(toName.equals("")){
+                toName = exampleArray.get(0).toString();
+            }
+            SharedPreferenceUtil.clearSharedPreference(getContext());
+            SharedPreferenceUtil.setSharedPreference(getContext(), "ToName", toName);
+            ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageSecond());
+        });
+        
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                toName = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initSpinner() {

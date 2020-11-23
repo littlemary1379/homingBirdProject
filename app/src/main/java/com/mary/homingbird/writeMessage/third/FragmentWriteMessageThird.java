@@ -12,7 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.mary.homingbird.R;
+import com.mary.homingbird.util.ActivityUtil;
 import com.mary.homingbird.util.SharedPreferenceUtil;
+import com.mary.homingbird.writeMessage.fourth.FragmentWriteMessageFourth;
+import com.mary.homingbird.writeMessage.second.FragmentWriteMessageSecond;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ public class FragmentWriteMessageThird extends Fragment {
 
     private View view;
 
-    private EditText editTextName;
+    private EditText editTextContent;
     private TextView textViewNext;
 
     public static FragmentWriteMessageThird newInstance() {
@@ -44,13 +47,14 @@ public class FragmentWriteMessageThird extends Fragment {
     }
 
     private void findView() {
+        editTextContent = view.findViewById(R.id.editTextContent);
         textViewNext = view.findViewById(R.id.textViewNext);
     }
 
     private void setListener(){
         textViewNext.setOnClickListener(v -> {
-            SharedPreferenceUtil.clearSharedPreference(getContext());
-            //SharedPreferenceUtil.setSharedPreference(getContext(), "FromName", editTextName.getText().toString());
+            SharedPreferenceUtil.setSharedPreference(getContext(), "Content", editTextContent.getText().toString());
+            ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageFourth());
         });
     }
 }

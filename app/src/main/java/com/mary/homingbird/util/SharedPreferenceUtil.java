@@ -22,4 +22,9 @@ public class SharedPreferenceUtil {
         editor.commit();
     }
 
+    public static String getStringSharedPreference(Context context, String key){
+        SharedPreferences sharedPreference = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        return sharedPreference.getString(key,"");
+    }
+
 }
