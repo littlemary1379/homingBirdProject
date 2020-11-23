@@ -90,13 +90,7 @@ public class FragmentWriteMessageFirst extends Fragment {
     }
 
     private void setListener(){
-        textViewNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DlogUtil.d(TAG, "하");
-                ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageSecond());
-            }
-        });
+        textViewNext.setOnClickListener(v -> ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageSecond()));
     }
 
     private void initSpinner() {

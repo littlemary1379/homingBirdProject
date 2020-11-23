@@ -30,6 +30,7 @@
     <string name="writeMessage_next">다음</string>
     <string name="writeMessageFirst_example">친구의 이메일을 선택해주세요.</string>
     <string name="writeMessageSecond_example">친구에게 전달할 내 이름을 적어주세요.</string>
+    <string name="writeMessageThird_example">친구에게 전달할 내용을 적어주세요.</string>
 
 
 </resources>
