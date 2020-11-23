@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,10 +60,14 @@ public class FragmentWriteMessageSecond extends Fragment {
         textViewNext = view.findViewById(R.id.textViewNext);
     }
 
-    private void setListener(){
+    private void setListener() {
         textViewNext.setOnClickListener(v -> {
+            if (editTextName.getText().toString().trim().equals("")) {
+                Toast.makeText(getContext(), "이름을 비울 수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             SharedPreferenceUtil.clearSharedPreference(getContext());
-            SharedPreferenceUtil.setSharedPreference(getContext(), "FromName", editTextName.getText().toString());
+            SharedPreferenceUtil.setSharedPreference(getContext(), "FromName", editTextName.getText().toString().trim());
             ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageThird());
         });
     }

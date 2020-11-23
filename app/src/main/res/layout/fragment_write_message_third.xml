@@ -13,21 +13,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/writeMessageSecond_example"
+            android:text="@string/writeMessageThird_example"
             android:layout_marginBottom="20dp"/>
 
 
         <EditText
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:inputType="textMultiLine"
             android:background="@drawable/edittext_a79c8e"
+            android:textSize="14sp"
+            android:textColor="@color/color_838383"
+            android:gravity="top"
             />
 
         <TextView
@@ -46,6 +50,7 @@
             android:background="@drawable/bg_button_eb9f9f"/>
 
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
