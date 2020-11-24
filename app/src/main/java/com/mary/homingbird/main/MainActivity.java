@@ -10,8 +10,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -30,10 +33,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mary.homingbird.R;
+import com.mary.homingbird.bean.MailBean;
 import com.mary.homingbird.findFriend.FindFriendActivity;
 import com.mary.homingbird.main.adapter.MainFragmentAdapter;
 import com.mary.homingbird.main.fragment.FragmentPostOffice;
@@ -44,6 +53,9 @@ import com.mary.homingbird.util.DlogUtil;
 import com.mary.homingbird.util.LoginUtil;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private List<MailBean> mailBeans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,29 +95,24 @@ public class MainActivity extends AppCompatActivity {
         findView();
         initFragment();
         initNavigation();
-
         setListener();
+
+
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
 
-    //    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        initDrawerMenu();
-//        super.onWindowFocusChanged(hasFocus);
-//    }
-
-    private void checkLogin(){
+    private void checkLogin() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        LoginUtil.checkLogin();
+        if(firebaseUser==null){
+            return;
+        }else{
+            checkMailList();
+        }
     }
 
-    private void findView(){
+    private void findView() {
         viewPager = findViewById(R.id.viewPager);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
@@ -119,39 +129,10 @@ public class MainActivity extends AppCompatActivity {
         constraintLayoutContainer = findViewById(R.id.constraintLayoutContainer);
         viewMenuHeader = navigationView.getHeaderView(0);
 
-//       Thread thread = new Thread(() -> {
-//           try {
-//               Thread.sleep(100);
-//               runOnUiThread(() -> initDrawerMenu());
-//           } catch (InterruptedException e) {
-//               e.printStackTrace();
-//           }
-//       });
-//
-//       thread.start();
     }
 
-    private void initDrawerMenu(){
-        //현재 네비게이션의 길이를 구함
-        int navigationHeight = navigationView.getHeight();
-        DlogUtil.d(TAG, navigationHeight);
-
-        //전체 뷰 길이를 구함
-        int height = drawerLayout.getHeight();
-        DlogUtil.d(TAG, height);
-
-
-        navigationView.setMinimumHeight(height);
-
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewMenuHeader.getLayoutParams();
-        layoutParams.bottomMargin = (height-navigationHeight)/2;
-
-        viewMenuHeader.setLayoutParams(layoutParams);
-
-    }
-
-    private void initFragment(){
-        mainFragmentAdapter=new MainFragmentAdapter(getSupportFragmentManager(),1);
+    private void initFragment() {
+        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), 1);
 
         mainFragmentAdapter.addFragment(FragmentPostbox.newInstance());
         mainFragmentAdapter.addFragment(FragmentPostOffice.newInstance());
@@ -160,19 +141,69 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPageTransformer(true, new MainZoomOutPageTransfomer());
     }
 
-    private void initNavigation(){
+    private void initNavigation() {
         Menu menu = navigationView.getMenu();
-        if(firebaseUser!=null){
+        if (firebaseUser != null) {
             menu.findItem(R.id.menu_login).setVisible(false);
             menu.findItem(R.id.menu_logout).setVisible(true);
-        }else{
+        } else {
             menu.findItem(R.id.menu_login).setVisible(true);
             menu.findItem(R.id.menu_logout).setVisible(false);
         }
-        initDrawerMenu();
     }
 
-    private void setListener(){
+    private void checkMailList() {
+        db.collection("/user/" + firebaseUser.getEmail() + "/mailList")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                mailBeans = new ArrayList<>();
+                                mailBeans.add(documentSnapshot.toObject(MailBean.class));
+                            }
+                            if(mailBeans!=null){
+
+                                popUpMail();
+                            }
+                            DlogUtil.d(TAG, "성공 : " + mailBeans);
+                        }
+                    }
+                });
+    }
+
+    private void popUpMail(){
+        for(MailBean mail : mailBeans){
+            if(mail.state.equals("읽지 않음")){
+                DlogUtil.d(TAG, "읽지 않은 것이 있음");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder
+                        .setTitle("")
+                        .setMessage("읽지 않은 메세지가 있습니다.")
+                        .setPositiveButton(R.string.main_popup_positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //todo
+                                //메일함으로 이동시키기
+                            }
+                        })
+                        .setNegativeButton(R.string.main_popup_negative, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                builder.show();
+            }
+
+        }
+    }
+
+
+    private void setListener() {
 
         imageViewMenu.setOnClickListener(v -> {
             DlogUtil.d(TAG, "imageViewMenu 클릭");
@@ -182,11 +213,11 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             DlogUtil.d(TAG, "navigationView 클릭");
 
-            if(item.getItemId() == R.id.menu_addFriend){
+            if (item.getItemId() == R.id.menu_addFriend) {
                 DlogUtil.d(TAG, "addFriend 클릭");
                 ActivityUtil.startActivityWithoutFinish(MainActivity.this, FindFriendActivity.class);
                 return true;
-            }else if(item.getItemId() == R.id.menu_logout){
+            } else if (item.getItemId() == R.id.menu_logout) {
                 DlogUtil.d(TAG, "logout 클릭");
                 callSignOut();
 
@@ -206,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onPageSelected: " + position);
 
                 switch (position) {
-                    case 0 : {
+                    case 0: {
                         textViewPostBox.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_a79c8e));
                         textViewPostOffice.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_f1bbba));
                         imageViewPostBox.setImageResource(R.drawable.postbox_3);
@@ -214,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
 
-                    case 1 : {
+                    case 1: {
                         textViewPostBox.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_f1bbba));
                         textViewPostOffice.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_a79c8e));
                         imageViewPostBox.setImageResource(R.drawable.postbox_1);
@@ -260,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    private void callSignOut(){
+    private void callSignOut() {
         firebaseAuth.signOut();
     }
 

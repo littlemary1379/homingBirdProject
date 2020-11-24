@@ -33,5 +33,9 @@
     <string name="writeMessageThird_example">친구에게 전달할 내용을 적어주세요.</string>
     <string name="writeMessageFourth_example">친구에게 전달할 내용을 다시 한 번 확인해주세요.</string>
 
+    <!--Main-->
+    <string name="main_popup_positive">읽으러 가기</string>
+    <string name="main_popup_negative">나중에 읽기</string>
+
 
 </resources>

@@ -120,12 +120,12 @@ public class FragmentWriteMessageFourth extends Fragment {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("to", toName);
         hashMap.put("toName", firebaseAuth.getCurrentUser().getEmail());
-        hashMap.put("FromName", fromName);
+        hashMap.put("fromName", fromName);
         hashMap.put("content", content);
         hashMap.put("state", "읽지 않음");
 
 
-        db.collection("/user/" + toName + "/mail")
+        db.collection("/user/" + toName + "/mailList")
                 .add(hashMap)
                 .addOnSuccessListener(documentReference -> {
                     DlogUtil.d(TAG, "성공");
@@ -139,12 +139,12 @@ public class FragmentWriteMessageFourth extends Fragment {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("to", toName);
         hashMap.put("toName", firebaseAuth.getCurrentUser().getEmail());
-        hashMap.put("FromName", fromName);
+        hashMap.put("fromName", fromName);
         hashMap.put("content", content);
         hashMap.put("state", "발송 완료");
 
 
-        db.collection("/user/" + firebaseAuth.getCurrentUser().getEmail() + "/mail")
+        db.collection("/user/" + firebaseAuth.getCurrentUser().getEmail() + "/storeMail")
                 .add(hashMap)
                 .addOnSuccessListener(documentReference -> DlogUtil.d(TAG, "성공"))
                 .addOnFailureListener(e -> DlogUtil.d(TAG, "실패"));
