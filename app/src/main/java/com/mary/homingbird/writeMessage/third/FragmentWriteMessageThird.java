@@ -1,10 +1,13 @@
 package com.mary.homingbird.writeMessage.third;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,7 @@ public class FragmentWriteMessageThird extends Fragment {
 
     private EditText editTextContent;
     private TextView textViewNext;
+    private LinearLayout linearLayout;
 
     public static FragmentWriteMessageThird newInstance() {
         FragmentWriteMessageThird fragmentWriteMessageFirst = new FragmentWriteMessageThird();
@@ -41,6 +45,7 @@ public class FragmentWriteMessageThird extends Fragment {
         view = inflater.inflate(R.layout.fragment_write_message_third, container, false);
 
         findView();
+        updateView();
         setListener();
 
         return view;
@@ -49,6 +54,19 @@ public class FragmentWriteMessageThird extends Fragment {
     private void findView() {
         editTextContent = view.findViewById(R.id.editTextContent);
         textViewNext = view.findViewById(R.id.textViewNext);
+        linearLayout = view.findViewById(R.id.linearLayout);
+    }
+
+    private void updateView(){
+        Point point = new Point();
+
+        Display windowMetrics = getContext().getDisplay();
+        windowMetrics.getRealSize(point);
+        int width = (int) (point.x*0.7);
+
+        linearLayout.getLayoutParams().width=width;
+        linearLayout.setLayoutParams(linearLayout.getLayoutParams());
+        linearLayout.requestLayout();
     }
 
     private void setListener(){

@@ -41,11 +41,12 @@ public class FragmentWriteMessageFirst extends Fragment {
 
     private Spinner spinner;
     private TextView textViewNext;
+    private ProgressBar progressBar;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
-    
-    private String toName="";
+
+    private String toName = "";
 
     public static FragmentWriteMessageFirst newInstance() {
         FragmentWriteMessageFirst fragmentWriteMessageFirst = new FragmentWriteMessageFirst();
@@ -72,6 +73,7 @@ public class FragmentWriteMessageFirst extends Fragment {
 
     private void initData() {
 
+        showProgressBar();
 
         DlogUtil.d(TAG, "/user/" + MemberBean.getInstance().email + "/friend");
 
@@ -84,28 +86,33 @@ public class FragmentWriteMessageFirst extends Fragment {
                             exampleArray.add((String) documentSnapshot.getData().get("email"));
                         }
                         DlogUtil.d(TAG, exampleArray);
+                        hideProgressBar();
                         initSpinner();
                     }
                 })
-                .addOnFailureListener(e -> e.printStackTrace());
+                .addOnFailureListener(e -> {
+                    hideProgressBar();
+                    e.printStackTrace();
+                });
     }
 
     private void findView() {
 
         spinner = view.findViewById(R.id.spinner);
         textViewNext = view.findViewById(R.id.textViewNext);
+        progressBar = view.findViewById(R.id.progressBar);
     }
 
     private void setListener() {
         textViewNext.setOnClickListener(v -> {
-            if(toName.equals("")){
+            if (toName.equals("")) {
                 toName = exampleArray.get(0).toString();
             }
             SharedPreferenceUtil.clearSharedPreference(getContext());
             SharedPreferenceUtil.setSharedPreference(getContext(), "ToName", toName);
             ActivityUtil.replaceFragment(getActivity(), R.id.frameLayoutContainer, new FragmentWriteMessageSecond());
         });
-        
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,5 +131,17 @@ public class FragmentWriteMessageFirst extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, exampleArray);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
+    }
+
+    private void showProgressBar() {
+        ProgressBarUtil progressBarUtil = new ProgressBarUtil(progressBar);
+        progressBarUtil.setProgressBar();
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        ProgressBarUtil progressBarUtil = new ProgressBarUtil(progressBar);
+        progressBarUtil.setProgressBar();
+        progressBar.setVisibility(View.GONE);
     }
 }

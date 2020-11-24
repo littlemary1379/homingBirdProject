@@ -11,5 +11,13 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
+
+
+    </style>
+
+    <!--edit text default style-->
+    <style name="editText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/color_eb9f9f</item>
+        <item name="colorControlNormal">@color/color_a79c8e</item>
     </style>
 </resources>

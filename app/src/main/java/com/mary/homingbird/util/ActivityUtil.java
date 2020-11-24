@@ -19,6 +19,13 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
+    public static void startActivityWithFinish(Context context, Class<?> cls){
+        Intent intent = new Intent(context, cls);
+        context.startActivity(intent);
+        Activity activity = (Activity) context;
+        activity.finish();
+    }
+
     public static void replaceFragment(Activity activity, int id, Fragment fragment){
         FragmentActivity fragmentActivity = (FragmentActivity) activity;
         FragmentManager fragmentManager= fragmentActivity.getSupportFragmentManager();
