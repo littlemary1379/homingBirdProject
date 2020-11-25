@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -155,22 +156,18 @@ public class MainActivity extends AppCompatActivity {
     private void checkMailList() {
         db.collection("/user/" + firebaseUser.getEmail() + "/mailList")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                mailBeans = new ArrayList<>();
-                                mailBeans.add(documentSnapshot.toObject(MailBean.class));
-                            }
-                            if(mailBeans!=null){
-
-                                popUpMail();
-                            }
-                            DlogUtil.d(TAG, "성공 : " + mailBeans);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            mailBeans = new ArrayList<>();
+                            mailBeans.add(documentSnapshot.toObject(MailBean.class));
                         }
+                        if(mailBeans!=null){
+                            popUpMail();
+                        }
+                        DlogUtil.d(TAG, "성공 : " + mailBeans);
                     }
-                });
+                }).addOnFailureListener(e -> DlogUtil.d(TAG, "실패"));
     }
 
     private void popUpMail(){
@@ -182,18 +179,12 @@ public class MainActivity extends AppCompatActivity {
                 builder
                         .setTitle("")
                         .setMessage("읽지 않은 메세지가 있습니다.")
-                        .setPositiveButton(R.string.main_popup_positive, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //todo
-                                //메일함으로 이동시키기
-                            }
+                        .setPositiveButton(R.string.main_popup_positive, (dialog, which) -> {
+                            //todo
+                            //메일함으로 이동시키기
                         })
-                        .setNegativeButton(R.string.main_popup_negative, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        .setNegativeButton(R.string.main_popup_negative, (dialog, which) -> {
 
-                            }
                         });
 
                 builder.show();
