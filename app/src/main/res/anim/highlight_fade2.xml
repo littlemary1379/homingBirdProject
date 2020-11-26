@@ -5,7 +5,7 @@
     android:fromAlpha="0"
     android:toAlpha="3"
     android:interpolator="@android:interpolator/linear"
-    android:startOffset="200"
+
     >
 
 </alpha>

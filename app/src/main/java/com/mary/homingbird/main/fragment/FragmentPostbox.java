@@ -54,7 +54,6 @@ public class FragmentPostbox extends Fragment {
         updateView();
         setListener();
         setAnimationListener();
-        setAnimation();
 
         return view;
     }
@@ -87,7 +86,7 @@ public class FragmentPostbox extends Fragment {
 
     }
 
-    private void setAnimationListener(){
+    private void setAnimationListener() {
 
         mailBoxListener = new Animation.AnimationListener() {
 
@@ -99,7 +98,7 @@ public class FragmentPostbox extends Fragment {
             public void onAnimationEnd(Animation animation) {
                 i++;
                 DlogUtil.d(TAG, "애니메이션 끝남 : " + i);
-                if (i > 1) {
+                if (i > 0) {
                     imageViewMail.setVisibility(View.VISIBLE);
                     mailLoadAction();
                 } else {
@@ -121,11 +120,8 @@ public class FragmentPostbox extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                imageViewHighlight1.setVisibility(View.VISIBLE);
-                imageViewHighlight2.setVisibility(View.VISIBLE);
-                imageViewHighlight3.setVisibility(View.VISIBLE);
                 DlogUtil.d(TAG, "메일리스너 끝");
-                highlightAction();
+                setAnimation();
             }
 
             @Override
@@ -137,35 +133,62 @@ public class FragmentPostbox extends Fragment {
 
     }
 
-    private void mailLoadAction(){
+    private void mailLoadAction() {
         Animation mailAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.mail_jumpimg);
         mailAnimation.setAnimationListener(mailListener);
         linearLayoutMail.setAnimation(mailAnimation);
         linearLayoutMail.startAnimation(mailAnimation);
     }
 
-    void setAnimation(){
+    void setAnimation() {
 
-        imageViewHighlight1.setVisibility(View.INVISIBLE);
-        imageViewHighlight2.setVisibility(View.INVISIBLE);
-        imageViewHighlight3.setVisibility(View.INVISIBLE);
+        imageViewHighlight1.setVisibility(View.VISIBLE);
+        imageViewHighlight2.setVisibility(View.VISIBLE);
+        imageViewHighlight3.setVisibility(View.VISIBLE);
 
-        Animation highlightAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade);
+        highlightAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade);
+        highlightAnimation.setStartTime(0);
         imageViewHighlight1.setAnimation(highlightAnimation);
 
-        Animation highlightAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade2);
+        highlightAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade2);
+        highlightAnimation.setStartTime(350);
         imageViewHighlight2.setAnimation(highlightAnimation2);
 
 
-        Animation highlightAnimation3 = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade3);
+        highlightAnimation3 = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade3);
+        highlightAnimation.setStartTime(700);
         imageViewHighlight3.setAnimation(highlightAnimation3);
+
+        DlogUtil.d(TAG, "??");
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(100);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            highlightAction();
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
     }
 
-    private void highlightAction(){
+    private void highlightAction() {
 
         imageViewHighlight1.startAnimation(highlightAnimation);
         imageViewHighlight2.startAnimation(highlightAnimation2);
         imageViewHighlight3.startAnimation(highlightAnimation3);
+        DlogUtil.d(TAG, "???");
+
 
     }
 
