@@ -27,6 +27,7 @@ public class FragmentPostbox extends Fragment {
     private ImageView imageViewHighlight1;
     private ImageView imageViewHighlight2;
     private ImageView imageViewHighlight3;
+    private ImageView imageViewHeart;
 
     private LinearLayout linearLayoutMail;
 
@@ -34,6 +35,7 @@ public class FragmentPostbox extends Fragment {
 
     private Animation.AnimationListener mailBoxListener;
     private Animation.AnimationListener mailListener;
+    private Animation.AnimationListener highlightListener;
 
     Animation highlightAnimation;
     Animation highlightAnimation2;
@@ -65,6 +67,7 @@ public class FragmentPostbox extends Fragment {
         imageViewHighlight1 = view.findViewById(R.id.imageViewHighLight1);
         imageViewHighlight2 = view.findViewById(R.id.imageViewHighLight2);
         imageViewHighlight3 = view.findViewById(R.id.imageViewHighLight3);
+        imageViewHeart=view.findViewById(R.id.imageViewHeart);
     }
 
     private void updateView() {
@@ -121,13 +124,32 @@ public class FragmentPostbox extends Fragment {
             @Override
             public void onAnimationEnd(Animation animation) {
                 DlogUtil.d(TAG, "메일리스너 끝");
-                setAnimation();
+                setHighlightAnimation();
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
 
+        };
+
+        highlightListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                DlogUtil.d(TAG, "하이라이터 리스너 종료");
+                fallenHeartAction();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
         };
 
 
@@ -140,7 +162,7 @@ public class FragmentPostbox extends Fragment {
         linearLayoutMail.startAnimation(mailAnimation);
     }
 
-    void setAnimation() {
+    private void setHighlightAnimation() {
 
         imageViewHighlight1.setVisibility(View.VISIBLE);
         imageViewHighlight2.setVisibility(View.VISIBLE);
@@ -151,34 +173,16 @@ public class FragmentPostbox extends Fragment {
         imageViewHighlight1.setAnimation(highlightAnimation);
 
         highlightAnimation2 = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade2);
-        highlightAnimation.setStartTime(350);
+        highlightAnimation.setStartTime(450);
         imageViewHighlight2.setAnimation(highlightAnimation2);
 
 
         highlightAnimation3 = AnimationUtils.loadAnimation(getContext(), R.anim.highlight_fade3);
-        highlightAnimation.setStartTime(700);
+        highlightAnimation3.setAnimationListener(highlightListener);
+        highlightAnimation.setStartTime(900);
         imageViewHighlight3.setAnimation(highlightAnimation3);
 
-        DlogUtil.d(TAG, "??");
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(100);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            highlightAction();
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
+        highlightAction();
 
     }
 
@@ -187,8 +191,14 @@ public class FragmentPostbox extends Fragment {
         imageViewHighlight1.startAnimation(highlightAnimation);
         imageViewHighlight2.startAnimation(highlightAnimation2);
         imageViewHighlight3.startAnimation(highlightAnimation3);
-        DlogUtil.d(TAG, "???");
 
+    }
+
+    private void fallenHeartAction(){
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fallen_heart);
+        imageViewHeart.setAnimation(animation);
+        imageViewHeart.startAnimation(animation);
+        DlogUtil.d(TAG, "????");
 
     }
 
