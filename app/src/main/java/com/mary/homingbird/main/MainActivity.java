@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                             mailBeans.add(documentSnapshot.toObject(MailBean.class));
                         }
                         if(mailBeans!=null){
-                            popUpMail();
+                            //popUpMail();
                         }
                         DlogUtil.d(TAG, "성공 : " + mailBeans);
                     }
